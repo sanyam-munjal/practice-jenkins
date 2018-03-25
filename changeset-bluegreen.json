@@ -226,8 +226,8 @@
             "CreatingSecurityGroup1": {
                   "Type": "AWS::EC2::SecurityGroup",
                   "Properties": {
-                        "GroupName": "sanyam-elb-sg-cloudformation",
-                        "GroupDescription": "sanyam-sg created by CloudFormation for classic-elb",
+                        "GroupName": "sanyam-ec2-all-traffic-sg-cloudformation",
+                        "GroupDescription": "sanyam-sg allow-all-traffic created by CloudFormation for ec2 instances",
                         "SecurityGroupIngress": [{
                               "IpProtocol": "-1",
                               "CidrIp": "0.0.0.0/0"
