@@ -1,0 +1,331 @@
+{
+      "AWSTemplateFormatVersion": "2010-09-09",
+
+      "Description": "AWS CloudFormation Sample Template for blue-green deployment",
+
+      "Resources": {
+
+            "CreatingVPC": {
+                  "Type": "AWS::EC2::VPC",
+                  "Properties": {
+                        "CidrBlock": "10.9.0.0/16",
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-vpc-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingSubnets1": {
+                  "Type": "AWS::EC2::Subnet",
+                  "Properties": {
+                        "AvailabilityZone": "us-west-2a",
+                        "CidrBlock": "10.9.8.0/24",
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-publicsubnet1-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingSubnets2": {
+                  "Type": "AWS::EC2::Subnet",
+                  "Properties": {
+                        "AvailabilityZone": "us-west-2a",
+                        "CidrBlock": "10.9.7.0/24",
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-privatesubnet1-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingSubnets3": {
+                  "Type": "AWS::EC2::Subnet",
+                  "Properties": {
+                        "AvailabilityZone": "us-west-2b",
+                        "CidrBlock": "10.9.6.0/24",
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-publicsubnet2-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingSubnets4": {
+                  "Type": "AWS::EC2::Subnet",
+                  "Properties": {
+                        "AvailabilityZone": "us-west-2b",
+                        "CidrBlock": "10.9.5.0/24",
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-privatesubnet2-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingRouteTable1": {
+                  "Type": "AWS::EC2::RouteTable",
+                  "Properties": {
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        },
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-public-route-table1-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingRouteTable2": {
+                  "Type": "AWS::EC2::RouteTable",
+                  "Properties": {
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        },
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-private-route-table1-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingRouteTable3": {
+                  "Type": "AWS::EC2::RouteTable",
+                  "Properties": {
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        },
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-public-route-table2-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingRouteTable4": {
+                  "Type": "AWS::EC2::RouteTable",
+                  "Properties": {
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        },
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-private-route-table2-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingInternetGateway": {
+                  "Type": "AWS::EC2::InternetGateway",
+                  "Properties": {
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-ig-cloudformation"
+                        }]
+                  }
+            },
+
+            "AttachingInternetGateway": {
+                  "Type": "AWS::EC2::VPCGatewayAttachment",
+                  "Properties": {
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        },
+                        "InternetGatewayId": {
+                              "Ref": "CreatingInternetGateway"
+                        }
+                  }
+            },
+
+            "CreatingRoute1": {
+                  "Type": "AWS::EC2::Route",
+                  "DependsOn": "CreatingInternetGateway",
+                  "Properties": {
+                        "RouteTableId": {
+                              "Ref": "CreatingRouteTable1"
+                        },
+                        "DestinationCidrBlock": "0.0.0.0/0",
+                        "GatewayId": {
+                              "Ref": "CreatingInternetGateway"
+                        }
+                  }
+            },
+
+            "CreatingRoute2": {
+                  "Type": "AWS::EC2::Route",
+                  "DependsOn": "CreatingInternetGateway",
+                  "Properties": {
+                        "RouteTableId": {
+                              "Ref": "CreatingRouteTable3"
+                        },
+                        "DestinationCidrBlock": "0.0.0.0/0",
+                        "GatewayId": {
+                              "Ref": "CreatingInternetGateway"
+                        }
+                  }
+            },
+
+            "SubnetRouteTableAssociation1": {
+                  "Type": "AWS::EC2::SubnetRouteTableAssociation",
+                  "Properties": {
+                        "SubnetId": {
+                              "Ref": "CreatingSubnets1"
+                        },
+                        "RouteTableId": {
+                              "Ref": "CreatingRouteTable1"
+                        }
+                  }
+            },
+
+            "SubnetRouteTableAssociation2": {
+                  "Type": "AWS::EC2::SubnetRouteTableAssociation",
+                  "Properties": {
+                        "SubnetId": {
+                              "Ref": "CreatingSubnets3"
+                        },
+                        "RouteTableId": {
+                              "Ref": "CreatingRouteTable3"
+                        }
+                  }
+            },
+
+            "CreatingSecurityGroup": {
+                  "Type": "AWS::EC2::SecurityGroup",
+                  "Properties": {
+                        "GroupName": "sanyam-elb-sg-cloudformation",
+                        "GroupDescription": "sanyam-sg created by CloudFormation for classic-elb",
+                        "SecurityGroupIngress": [{
+                              "IpProtocol": "tcp",
+                              "FromPort": "80",
+                              "ToPort": "80",
+                              "CidrIp": "0.0.0.0/0"
+                        }],
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-elb-sg-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingSecurityGroup1": {
+                  "Type": "AWS::EC2::SecurityGroup",
+                  "Properties": {
+                        "GroupName": "sanyam-elb-sg-cloudformation",
+                        "GroupDescription": "sanyam-sg created by CloudFormation for classic-elb",
+                        "SecurityGroupIngress": [{
+                              "IpProtocol": "-1",
+                              "CidrIp": "0.0.0.0/0"
+                        }],
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-ec2-all-traffic-sg-cloudformation"
+                        }],
+                        "VpcId": {
+                              "Ref": "CreatingVPC"
+                        }
+                  }
+            },
+
+            "CreatingClassicLoadBalancerELB": {
+                  "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+                  "Properties": {
+                        "ConnectionDrainingPolicy": {
+                              "Enabled": "true",
+                              "Timeout": 60
+                        },
+                        "ConnectionSettings": {
+                              "IdleTimeout": 30
+                        },
+                        "CrossZone": "true",
+                        "HealthCheck": {
+                              "HealthyThreshold": 10,
+                              "Interval": 30,
+                              "Target": "HTTP:80/index.html",
+                              "Timeout": 5,
+                              "UnhealthyThreshold": 2
+                        },
+                        "LoadBalancerName": "sanyam-elb-cloudformation",
+                        "Listeners": [{
+                              "InstancePort": "80",
+                              "InstanceProtocol": "HTTP",
+                              "LoadBalancerPort": "80",
+                              "Protocol": "HTTP"
+                        }],
+                        "Scheme": "internet-facing",
+                        "SecurityGroups": [{
+                              "Ref": "CreatingSecurityGroup"
+                        }],
+                        "Subnets": [{
+                              "Ref": "CreatingSubnets1"
+                        }, {
+                              "Ref": "CreatingSubnets3"
+                        }],
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-elb-cloudformation"
+                        }]
+                  }
+            },
+
+            "CreatingLaunchConfiguration": {
+                  "Type": "AWS::AutoScaling::LaunchConfiguration",
+                  "Properties": {
+                        "ImageId": "ami-1798016f",
+                        "InstanceMonitoring": "false",
+                        "InstanceType": "t2.nano",
+                        "KeyName": "sanyam-oregon",
+                        "PlacementTenancy": "default",
+                        "SecurityGroups": [{
+                              "Ref": "CreatingSecurityGroup1"
+                        }]
+                  }
+            },
+
+            "CreatingAutoScalingGroup": {
+                  "DependsOn": "CreatingClassicLoadBalancerELB",
+                  "Type": "AWS::AutoScaling::AutoScalingGroup",
+                  "Properties": {
+                        "AvailabilityZones": ["us-west-2a", "us-west-2b"],
+                        "Cooldown": 30,
+                        "DesiredCapacity": 1,
+                        "HealthCheckGracePeriod": 300,
+                        "HealthCheckType": "ELB",
+                        "LaunchConfigurationName": {
+                              "Ref": "CreatingLaunchConfiguration"
+                        },
+                        "LoadBalancerNames": ["sanyam-elb-cloudformation"],
+                        "MaxSize": 2,
+                        "MinSize": 1,
+                        "Tags": [{
+                              "Key": "Name",
+                              "Value": "sanyam-asg-cloudformation",
+                              "PropagateAtLaunch": "true"
+                        }],
+                        "TerminationPolicies": ["OldestInstance"],
+                        "VPCZoneIdentifier": [{
+                              "Ref": "CreatingSubnets1"
+                        }, {
+                              "Ref": "CreatingSubnets3"
+                        }]
+                  }
+
+            }
+
+      }
+}
