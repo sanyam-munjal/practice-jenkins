@@ -287,7 +287,7 @@
                   "Type": "AWS::AutoScaling::LaunchConfiguration",
                   "Properties": {
                         "AssociatePublicIpAddress" : "true",
-                        "ImageId": "ami-1798016f",
+                        "ImageId": "ami-24920b5c",
                         "InstanceMonitoring": "false",
                         "InstanceType": "t2.nano",
                         "KeyName": "sanyam-oregon",
