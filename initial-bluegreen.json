@@ -286,6 +286,7 @@
             "CreatingLaunchConfiguration": {
                   "Type": "AWS::AutoScaling::LaunchConfiguration",
                   "Properties": {
+                        "AssociatePublicIpAddress" : "true",
                         "ImageId": "ami-1798016f",
                         "InstanceMonitoring": "false",
                         "InstanceType": "t2.nano",
