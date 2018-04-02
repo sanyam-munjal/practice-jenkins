@@ -306,7 +306,7 @@
                         "Cooldown": 30,
                         "DesiredCapacity": 1,
                         "HealthCheckGracePeriod": 300,
-                        "HealthCheckType": "ELB",
+                        "HealthCheckType": "EC2",
                         "LaunchConfigurationName": {
                               "Ref": "CreatingLaunchConfiguration"
                         },
