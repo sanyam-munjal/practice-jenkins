@@ -256,7 +256,7 @@
                         "HealthCheck": {
                               "HealthyThreshold": 10,
                               "Interval": 30,
-                              "Target": "HTTP:8080/index.html",
+                              "Target": "HTTP:8080/",
                               "Timeout": 5,
                               "UnhealthyThreshold": 2
                         },
