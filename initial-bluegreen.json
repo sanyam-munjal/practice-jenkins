@@ -256,13 +256,13 @@
                         "HealthCheck": {
                               "HealthyThreshold": 10,
                               "Interval": 30,
-                              "Target": "HTTP:80/index.html",
+                              "Target": "HTTP:8080/index.html",
                               "Timeout": 5,
                               "UnhealthyThreshold": 2
                         },
                         "LoadBalancerName": "sanyam-elb-cloudformation",
                         "Listeners": [{
-                              "InstancePort": "80",
+                              "InstancePort": "8080",
                               "InstanceProtocol": "HTTP",
                               "LoadBalancerPort": "80",
                               "Protocol": "HTTP"
